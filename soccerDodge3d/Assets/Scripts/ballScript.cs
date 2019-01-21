@@ -41,11 +41,6 @@ public class ballScript : MonoBehaviour {
         init();
     }
 
-    void Awake()
-    {
-
-    }
-
     void Update()
     {
         if(firstClick == true && firstStart == true)
