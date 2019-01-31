@@ -12,7 +12,6 @@ public class controller : MonoBehaviour {
     public GameObject air;
     public GameObject ground;
 
-    private bool hitGround;
     private bool canJump;
     private bool canCrouch;
     private Rigidbody playerRigidBody;
@@ -21,7 +20,6 @@ public class controller : MonoBehaviour {
     {
         canJump = true;
         canCrouch = true;
-        hitGround = false;
         playerRigidBody = GetComponent<Rigidbody>();
         playerBoxCollider = GetComponent<BoxCollider>();
 		
@@ -30,16 +28,20 @@ public class controller : MonoBehaviour {
 
     void Update()
     {
-            if (Input.touchCount > 0 && ballScript.isPlaying == true) {
-                var touch = Input.GetTouch (0);
-                ballScript.firstClick = true;
-                if (touch.position.x < Screen.width / 2 && canJump == true)
+            if (UserTouchedScreen()) 
+            {
+                var touch = Input.GetTouch(0);
+                if (UserTouchedLeftHalfOfScreen(touch))
                 {
                     playerRigidBody.velocity = new Vector3(playerRigidBody.velocity.x, jumpForce, playerRigidBody.velocity.z);
+                    ballScript.firstClick = true;
                 }
-                else if (touch.position.x > Screen.width / 2 && touch.phase != TouchPhase.Ended && canCrouch == true) {
+                else if (UserTouchedRightHalfOfScreen(touch)) 
+                {
                     animator.SetBool("isCrouching", true);
-                } else {
+                    ballScript.firstClick = true;
+                } else 
+                {
                     animator.SetBool ("isCrouching", false);
                 }
             }
@@ -51,8 +53,6 @@ public class controller : MonoBehaviour {
         {
             canJump = false;
             canCrouch = false;
-            hitGround = true;
-            animator.ResetTrigger("hitGround");
         }
     }
 
@@ -60,14 +60,45 @@ public class controller : MonoBehaviour {
     {
         if(col.gameObject.tag == "Ground")
         {
-            if(hitGround == true)
-            {
-                animator.SetTrigger("hitGround");
-            }
+            animator.SetTrigger("hitGround");
             canJump = true;
             canCrouch = true;
-            hitGround = false;
         }
     }
 
+    private bool UserTouchedScreen()
+    {
+        if(Input.touchCount > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private bool UserTouchedLeftHalfOfScreen(Touch touch)
+    {
+        if(touch.position.x < Screen.width / 2 && canJump == true)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private bool UserTouchedRightHalfOfScreen(Touch touch)
+    {
+        if(touch.position.x > Screen.width / 2 && canCrouch == true && touch.phase != TouchPhase.Ended)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

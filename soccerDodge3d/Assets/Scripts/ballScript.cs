@@ -6,16 +6,12 @@ using UnityEngine.UI;
 
 public class ballScript : MonoBehaviour {
 
-    public static bool isDead;
-    public static bool isPlaying = true;
     public static bool firstClick = false;
 
-    private bool firstBallGo = false;
     private bool firstStart = true;
     private bool waitIsOver = false;
     private int ballSpeed = -12;
     private int ballHeight = 9;
-    private Vector3 originalPos;
     private GameObject childBall;
     private Rigidbody ballRigidBody;
 
@@ -30,17 +26,17 @@ public class ballScript : MonoBehaviour {
     public Image jumpTut;
     public Image crouchTut;
     public GameObject deathUI;
+    public GameObject temporaryStartMenu;
     public Text scoreText;
     public Text coinsText;
     public Text highScoreText;
     private Animator deathUIAnimator;
     public Animator goalieAnimator;
     public Animator goalie2Animator;
-    public ParticleSystem playerParticle;
+    public ParticleSystem playerDeathParticles;
 
 
     void Start () {
-        originalPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
         ballRigidBody = GetComponent<Rigidbody>();
         deathUIAnimator = deathUI.GetComponent<Animator>();
         childBall = ball.transform.GetChild(0).gameObject;
@@ -49,9 +45,9 @@ public class ballScript : MonoBehaviour {
 
     void Update()
     {
-        scoreText.text = score.ToString();
         if(firstClick == true && firstStart == true)
         {
+            temporaryStartMenu.SetActive(false);
             StartCoroutine("countdown");
             firstStart = false;
         }
@@ -65,15 +61,9 @@ public class ballScript : MonoBehaviour {
             upOrDown = Random.Range(1, 3);
             ballSpeed = -12;
             score += 1;
+            scoreText.text = score.ToString();
             coinsAddedThisRound += 1;
-            if(upOrDown == 1)
-            {
-                goBall();
-            }
-            else
-            {
-                goBallUp();
-            }
+            ChooseIfBallGoesUpOrDown();
         }
         else if(collision.gameObject.tag == "Goalie2")
         {
@@ -81,35 +71,23 @@ public class ballScript : MonoBehaviour {
             upOrDown = Random.Range(1, 3);
             ballSpeed = 12;
             score += 1;
+            scoreText.text = score.ToString();
             coinsAddedThisRound += 1;
-            if (upOrDown == 1)
-            {
-                goBall();
-            }
-            else
-            {
-                goBallUp();
-            }
+            ChooseIfBallGoesUpOrDown();
         }
         else if(collision.gameObject.tag == "User")
         {
-            playerParticle.Play();
+            playerDeathParticles.Play();
             player.SetActive(false);
             deathUIAnimator.SetBool("Died", true);
             ballRigidBody.velocity = Vector3.zero;
             childBall.GetComponent<Renderer>().enabled = false;
-            isDead = true;
-            isPlaying = false;
             waitIsOver = false;
-            gameObject.transform.position = originalPos;
             deathUI.SetActive(true);
             ballRigidBody.isKinematic = true;
             totalCoins += coinsAddedThisRound;
             PlayerPrefs.SetInt("Coins", totalCoins);
-            if(score > highScore)
-            {
-                PlayerPrefs.SetInt("HighScore", score);
-            }
+            CheckForHighScore();
             StartCoroutine("addCoins");
         }
     }
@@ -153,28 +131,25 @@ public class ballScript : MonoBehaviour {
 
     public void InitializeScene()
     {
-        resetBallPosition();
         childBall.GetComponent<Renderer>().enabled = true;
-        isDead = false;
-        firstBallGo = true;
         firstStart = true;
         firstClick = false;
         ballSpeed = -12;
         score = 0;
+        scoreText.text = score.ToString();
         coinsAddedThisRound = 0;
         totalCoins = PlayerPrefs.GetInt("Coins", 0);
         coinsText.text = totalCoins.ToString();
         highScore = PlayerPrefs.GetInt("HighScore", 0);
         highScoreText.text = "Best " + highScore.ToString();
-        isPlaying = true;
     }
 
-    void goBall()
+    void KickBallStraight()
     {
         ballRigidBody.velocity = new Vector3(ballRigidBody.velocity.x, ballRigidBody.velocity.y, ballSpeed);
     }
 
-    void goBallUp()
+    void KickBallUp()
     {
         ballRigidBody.velocity = new Vector3(ballRigidBody.velocity.x, ballHeight, ballSpeed);
     }
@@ -186,18 +161,27 @@ public class ballScript : MonoBehaviour {
             var velocity = ballRigidBody.velocity;
             velocity.z = ballSpeed;
             ballRigidBody.velocity = velocity;
-            if(firstBallGo == true)
-            {
-                goBall();
-                firstBallGo = false;
-            }
+            KickBallStraight();
         }
     }
 
-    private void resetBallPosition()
+    private void CheckForHighScore()
     {
-        ballRigidBody.velocity = new Vector3(0f, 0f, 0f);
-        ballRigidBody.angularVelocity = new Vector3(0f, 0f, 0f);
-        ballRigidBody.transform.position = originalPos;
+        if(score > highScore)
+            {
+                PlayerPrefs.SetInt("HighScore", score);
+            }
+    }
+
+    private void ChooseIfBallGoesUpOrDown()
+    {
+        if (upOrDown == 1)
+        {
+            KickBallStraight();
+        }
+        else
+        {
+            KickBallUp();
+        }
     }
 }

@@ -5,15 +5,20 @@ using UnityEngine.EventSystems;
 
 public class DetectButtonDown : MonoBehaviour
 {
+    private GameObject player;
+
+    private void Start()
+    {
+        player = GameObject.Find("Player");
+    }
+
     public void heldDown()
     {
-        CharacterSelection.selectingChar = true;
-        ballScript.isPlaying = false;
+        player.GetComponent<controller>().enabled = false;
     }
 
     public void letUp()
     {
-        ballScript.isPlaying = true;
-        CharacterSelection.selectingChar = false;
+        player.GetComponent<controller>().enabled = true;
     }
 }
