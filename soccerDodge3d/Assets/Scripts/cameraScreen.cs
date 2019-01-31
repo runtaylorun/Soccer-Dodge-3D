@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class cameraScreen : MonoBehaviour {
 
-    public float width = 16f;
-    public float height = 9f;
+    float originalWidth = 1920f;
+    float originalHeight = 1080f;
 
-    void Awake()
+     void Start()
     {
-        Camera.main.aspect = width / height;
+        gameObject.GetComponent<Camera>().aspect = (originalWidth / originalHeight) * (Screen.width / Screen.height);
     }
 
 

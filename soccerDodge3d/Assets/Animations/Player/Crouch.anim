@@ -4,7 +4,8 @@
 AnimationClip:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: Crouch
   serializedVersion: 6
   m_Legacy: 0
@@ -46,7 +47,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 26.984203
+        value: 37.521137
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -55,7 +56,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.25
-        value: 15.321929
+        value: 27.029484
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -74,7 +75,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 28.408638
+        value: 29.29375
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -83,7 +84,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.25
-        value: 21.969362
+        value: 24.047924
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -237,7 +238,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 26.984203
+        value: 37.521137
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -246,7 +247,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.25
-        value: 15.321929
+        value: 27.029484
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -265,7 +266,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 28.408638
+        value: 29.29375
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -274,7 +275,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.25
-        value: 21.969362
+        value: 24.047924
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -291,5 +292,4 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_GenerateMotionCurves: 0
   m_Events: []

@@ -30,19 +30,19 @@ public class controller : MonoBehaviour {
 
     void Update()
     {
-        if (Input.touchCount > 0 && ballScript.isPlaying == true) {
-            var touch = Input.GetTouch (0);
-            ballScript.firstClick = true;
-            if (touch.position.x < Screen.width / 2 && canJump == true)
-            {
-                playerRigidBody.velocity = new Vector3(playerRigidBody.velocity.x, jumpForce, playerRigidBody.velocity.z);
+            if (Input.touchCount > 0 && ballScript.isPlaying == true) {
+                var touch = Input.GetTouch (0);
+                ballScript.firstClick = true;
+                if (touch.position.x < Screen.width / 2 && canJump == true)
+                {
+                    playerRigidBody.velocity = new Vector3(playerRigidBody.velocity.x, jumpForce, playerRigidBody.velocity.z);
+                }
+                else if (touch.position.x > Screen.width / 2 && touch.phase != TouchPhase.Ended && canCrouch == true) {
+                    animator.SetBool("isCrouching", true);
+                } else {
+                    animator.SetBool ("isCrouching", false);
+                }
             }
-            else if (touch.position.x > Screen.width / 2 && touch.phase != TouchPhase.Ended && canCrouch == true) {
-                animator.SetBool("isCrouching", true);
-            } else {
-                animator.SetBool ("isCrouching", false);
-            }
-        }
 	}
 
      void OnTriggerEnter(Collider collision)

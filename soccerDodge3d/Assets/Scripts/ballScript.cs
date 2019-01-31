@@ -18,10 +18,11 @@ public class ballScript : MonoBehaviour {
     private Vector3 originalPos;
     private GameObject childBall;
     private Rigidbody ballRigidBody;
-    private List<GameObject> scoreTextInstances;
 
-    public string scoreText = "0";
     public int score = 0;
+    private int totalCoins;
+    private int highScore;
+    private int coinsAddedThisRound = 0;
     public int upOrDown;
     public GameObject ball;
     public GameObject player;
@@ -29,20 +30,26 @@ public class ballScript : MonoBehaviour {
     public Image jumpTut;
     public Image crouchTut;
     public GameObject deathUI;
+    public Text scoreText;
+    public Text coinsText;
+    public Text highScoreText;
     private Animator deathUIAnimator;
+    public Animator goalieAnimator;
+    public Animator goalie2Animator;
+    public ParticleSystem playerParticle;
 
 
     void Start () {
         originalPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
         ballRigidBody = GetComponent<Rigidbody>();
         deathUIAnimator = deathUI.GetComponent<Animator>();
-        scoreTextInstances = new List<GameObject>();
         childBall = ball.transform.GetChild(0).gameObject;
-        init();
+        InitializeScene();
     }
 
     void Update()
     {
+        scoreText.text = score.ToString();
         if(firstClick == true && firstStart == true)
         {
             StartCoroutine("countdown");
@@ -54,11 +61,11 @@ public class ballScript : MonoBehaviour {
     {
         if (collision.gameObject.tag == "Goalie1")
         {
-
+            goalieAnimator.SetTrigger("hitGoalie");
             upOrDown = Random.Range(1, 3);
             ballSpeed = -12;
             score += 1;
-            scoreLoop();
+            coinsAddedThisRound += 1;
             if(upOrDown == 1)
             {
                 goBall();
@@ -70,10 +77,11 @@ public class ballScript : MonoBehaviour {
         }
         else if(collision.gameObject.tag == "Goalie2")
         {
+            goalie2Animator.SetTrigger("Goalie2Hit");
             upOrDown = Random.Range(1, 3);
             ballSpeed = 12;
             score += 1;
-            scoreLoop();
+            coinsAddedThisRound += 1;
             if (upOrDown == 1)
             {
                 goBall();
@@ -85,18 +93,24 @@ public class ballScript : MonoBehaviour {
         }
         else if(collision.gameObject.tag == "User")
         {
+            playerParticle.Play();
+            player.SetActive(false);
+            deathUIAnimator.SetBool("Died", true);
             ballRigidBody.velocity = Vector3.zero;
             childBall.GetComponent<Renderer>().enabled = false;
-            foreach (GameObject O in scoreTextInstances)
-            {
-                Destroy(O);
-            }
             isDead = true;
             isPlaying = false;
             waitIsOver = false;
             gameObject.transform.position = originalPos;
             deathUI.SetActive(true);
-            deathUIAnimator.SetBool("Died", true);
+            ballRigidBody.isKinematic = true;
+            totalCoins += coinsAddedThisRound;
+            PlayerPrefs.SetInt("Coins", totalCoins);
+            if(score > highScore)
+            {
+                PlayerPrefs.SetInt("HighScore", score);
+            }
+            StartCoroutine("addCoins");
         }
     }
 
@@ -121,18 +135,37 @@ public class ballScript : MonoBehaviour {
         divider.SetActive(false);
         jumpTut.enabled = false;
         crouchTut.enabled = false;
-        scoreLoop();
+        highScoreText.enabled = false;
     }
 
-    public void init()
+    IEnumerator addCoins()
+    {
+        totalCoins -= coinsAddedThisRound;
+        for (int i = 0; i <= coinsAddedThisRound; i++)
+        {
+            yield return new WaitForSeconds(0.1f);
+            coinsText.text = totalCoins.ToString();
+            totalCoins++;
+        }
+
+
+    }
+
+    public void InitializeScene()
     {
         resetBallPosition();
         childBall.GetComponent<Renderer>().enabled = true;
         isDead = false;
         firstBallGo = true;
         firstStart = true;
+        firstClick = false;
         ballSpeed = -12;
         score = 0;
+        coinsAddedThisRound = 0;
+        totalCoins = PlayerPrefs.GetInt("Coins", 0);
+        coinsText.text = totalCoins.ToString();
+        highScore = PlayerPrefs.GetInt("HighScore", 0);
+        highScoreText.text = "Best " + highScore.ToString();
         isPlaying = true;
     }
 
@@ -167,29 +200,4 @@ public class ballScript : MonoBehaviour {
         ballRigidBody.angularVelocity = new Vector3(0f, 0f, 0f);
         ballRigidBody.transform.position = originalPos;
     }
-
-    public void scoreLoop()
-    {
-        scoreText = score.ToString();
-        float z = 57.1f;
-        if (score > 0)
-        {
-            //GameObject[] numsToDestroy = new GameObject[score];
-            //numsToDestroy = GameObject.FindGameObjectsWithTag("Num");
-            foreach(GameObject O in scoreTextInstances)
-            {
-                Destroy(O);
-            }
-        }
-        foreach (char num in scoreText)
-        {
-            int i = (int)num;
-            var number = Resources.Load(num.ToString(), typeof(GameObject)) as GameObject;
-            GameObject clone = Instantiate(number, new Vector3(141.84f, -25.5f, z), Quaternion.Euler(new Vector3(0, 270, 0)));
-            scoreTextInstances.Add(clone);
-            z -= .4f;
-        }
-    }
-
-
 }
