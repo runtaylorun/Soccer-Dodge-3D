@@ -28,6 +28,7 @@ public class controller : MonoBehaviour {
 
     void Update()
     {
+        /*
             if (UserTouchedScreen()) 
             {
                 var touch = Input.GetTouch(0);
@@ -45,6 +46,22 @@ public class controller : MonoBehaviour {
                     animator.SetBool ("isCrouching", false);
                 }
             }
+
+*/
+        if(Input.GetKeyDown(KeyCode.Space) && canJump)
+        {
+            playerRigidBody.velocity = new Vector3(playerRigidBody.velocity.x, jumpForce, playerRigidBody.velocity.z);
+            ballScript.firstClick = true;
+        }
+        else if(Input.GetKey(KeyCode.C) && canCrouch == true)
+        {
+            animator.SetBool("isCrouching", true);
+            ballScript.firstClick = true;
+        }
+        else
+        {
+            animator.SetBool("isCrouching", false);
+        }
 	}
 
      void OnTriggerEnter(Collider collision)
