@@ -9,7 +9,7 @@ public class DetectButtonDown : MonoBehaviour
 
     private void Start()
     {
-        player = GameObject.Find("Player");
+        player = GameObject.FindWithTag("User");
     }
 
     public void heldDown()

@@ -14,18 +14,20 @@ public class ballScript : MonoBehaviour {
     private int ballHeight = 9;
     private GameObject childBall;
     private Rigidbody ballRigidBody;
+    private GameObject modelToLoad;
+    private GameObject modelClone;
 
     public int score = 0;
     private int totalCoins;
     private int highScore;
     private int coinsAddedThisRound = 0;
+    private int characterIndex;
+    private Vector3 playerStartPosition = new Vector3(141.84f, -27.101f, 57.08f);
     public int upOrDown;
     public GameObject ball;
     public GameObject player;
-    public GameObject divider;
-    public Image jumpTut;
-    public Image crouchTut;
     public GameObject deathUI;
+    public GameObject mainUI;
     public GameObject temporaryStartMenu;
     public Text scoreText;
     public Text coinsText;
@@ -37,6 +39,9 @@ public class ballScript : MonoBehaviour {
 
 
     void Start () {
+        characterIndex = PlayerPrefs.GetInt("characterIndex", 1);
+        SelectCharacterToLoad();
+        modelClone = Instantiate(modelToLoad, playerStartPosition, Quaternion.Euler(new Vector3(0, 270, 0)));
         ballRigidBody = GetComponent<Rigidbody>();
         deathUIAnimator = deathUI.GetComponent<Animator>();
         childBall = ball.transform.GetChild(0).gameObject;
@@ -45,7 +50,7 @@ public class ballScript : MonoBehaviour {
 
     void Update()
     {
-        if(firstClick == true && firstStart == true)
+        if(firstClick && firstStart)
         {
             temporaryStartMenu.SetActive(false);
             StartCoroutine("countdown");
@@ -78,16 +83,15 @@ public class ballScript : MonoBehaviour {
         else if(collision.gameObject.tag == "User")
         {
             playerDeathParticles.Play();
-            player.SetActive(false);
+            Destroy(modelClone);
             deathUIAnimator.SetBool("Died", true);
             ballRigidBody.velocity = Vector3.zero;
             childBall.GetComponent<Renderer>().enabled = false;
             waitIsOver = false;
             deathUI.SetActive(true);
             ballRigidBody.isKinematic = true;
-            totalCoins += coinsAddedThisRound;
-            PlayerPrefs.SetInt("Coins", totalCoins);
-            CheckForHighScore();
+            UpdatePlayersCoins();
+            CheckForAndSetHighScore();
             StartCoroutine("addCoins");
         }
     }
@@ -110,10 +114,7 @@ public class ballScript : MonoBehaviour {
         Destroy(clone);
 
         waitIsOver = true;
-        divider.SetActive(false);
-        jumpTut.enabled = false;
-        crouchTut.enabled = false;
-        highScoreText.enabled = false;
+        mainUI.SetActive(false);
     }
 
     IEnumerator addCoins()
@@ -156,7 +157,7 @@ public class ballScript : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        if (waitIsOver == true)
+        if (waitIsOver)
         {
             var velocity = ballRigidBody.velocity;
             velocity.z = ballSpeed;
@@ -165,7 +166,7 @@ public class ballScript : MonoBehaviour {
         }
     }
 
-    private void CheckForHighScore()
+    private void CheckForAndSetHighScore()
     {
         if(score > highScore)
             {
@@ -182,6 +183,34 @@ public class ballScript : MonoBehaviour {
         else
         {
             KickBallUp();
+        }
+    }
+
+    private void UpdatePlayersCoins()
+    {
+        totalCoins += coinsAddedThisRound;
+        PlayerPrefs.SetInt("Coins", totalCoins);
+    }
+
+    private void SelectCharacterToLoad()
+    {
+        switch(characterIndex)
+        {
+            case 1:
+                modelToLoad = Resources.Load("PlayerLoad", typeof(GameObject)) as GameObject;
+                break;
+            case 2:
+                modelToLoad = Resources.Load("Player2Load", typeof(GameObject)) as GameObject;
+                break;
+            case 3:
+                modelToLoad = Resources.Load("Player3Load", typeof(GameObject)) as GameObject;
+                break;
+            case 4:
+                modelToLoad = Resources.Load("Player4Load", typeof(GameObject)) as GameObject;
+                break;
+            case 5:
+                modelToLoad = Resources.Load("Player5Load", typeof(GameObject)) as GameObject;
+                break;
         }
     }
 }

@@ -43,17 +43,18 @@ public class controller : MonoBehaviour {
                     ballScript.firstClick = true;
                 } else 
                 {
-                    animator.SetBool ("isCrouching", false);
+                animator.SetBool ("isCrouching", false);
                 }
             }
-
 */
+
+
         if(Input.GetKeyDown(KeyCode.Space) && canJump)
         {
             playerRigidBody.velocity = new Vector3(playerRigidBody.velocity.x, jumpForce, playerRigidBody.velocity.z);
             ballScript.firstClick = true;
         }
-        else if(Input.GetKey(KeyCode.C) && canCrouch == true)
+        else if(Input.GetKey(KeyCode.C) && canCrouch)
         {
             animator.SetBool("isCrouching", true);
             ballScript.firstClick = true;
@@ -62,8 +63,10 @@ public class controller : MonoBehaviour {
         {
             animator.SetBool("isCrouching", false);
         }
-	}
 
+
+	}
+	
      void OnTriggerEnter(Collider collision)
     {
         if(collision.gameObject.tag == "Air")
@@ -97,7 +100,7 @@ public class controller : MonoBehaviour {
 
     private bool UserTouchedLeftHalfOfScreen(Touch touch)
     {
-        if(touch.position.x < Screen.width / 2 && canJump == true)
+        if(touch.position.x < Screen.width / 2 && canJump)
         {
             return true;
         }
@@ -109,7 +112,7 @@ public class controller : MonoBehaviour {
 
     private bool UserTouchedRightHalfOfScreen(Touch touch)
     {
-        if(touch.position.x > Screen.width / 2 && canCrouch == true && touch.phase != TouchPhase.Ended)
+        if(touch.position.x > Screen.width / 2 && canCrouch && touch.phase != TouchPhase.Ended)
         {
             return true;
         }

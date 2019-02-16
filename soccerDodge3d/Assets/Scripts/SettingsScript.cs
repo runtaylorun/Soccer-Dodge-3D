@@ -5,65 +5,135 @@ using UnityEngine.UI;
 
 public class SettingsScript : MonoBehaviour
 {
-    public GameObject settingsMenu;
-    public Text scoreText;
-    public Text coinsText;
-    public Image coinImage;
     public Sprite regularMute;
     public Sprite muteButtonHighlighted;
     public Sprite regularDisabledCrowdGraphic;
     public Sprite highlightedCrowdDisabledGraphic;
-    public AudioSource buttonClick;
+
     public Button muteBtn;
-    public Button infoBtn;
     public Button crowdButton;
+    public Button tutorialButton;
 
-    private bool isMuted;
-    private bool crowdDisabled;
+    public GameObject settingsMenu;
+    public GameObject tutorial;
+    public GameObject crowd;
+    public GameObject permanentUI;
 
+    public AudioSource buttonPressed;
+
+    public void Start()
+    {
+        CheckIfCrowdShouldBeDisabled();
+        CheckIfTutoiralShouldBeDisabled();
+        CheckIfGameShouldBeMuted();
+    }
     public void showSettings()
     {
-        buttonClick.Play();
+        buttonPressed.Play();
         settingsMenu.SetActive(true);
-        scoreText.enabled = false;
-        coinsText.enabled = false;
-        coinImage.enabled = false;
+        permanentUI.SetActive(false);
     }
 
     public void leaveSettings()
     {
-        buttonClick.Play();
+        buttonPressed.Play();
         settingsMenu.SetActive(false);
-        scoreText.enabled = true;
-        coinsText.enabled = true;
-        coinImage.enabled = true;
+        permanentUI.SetActive(true);
     }
 
     public void muteBtnPressed()
     {
-        if(!isMuted)
+        buttonPressed.Play();
+        if(PlayerPrefs.GetInt("isMuted", 0) == 0)
         {
             muteBtn.image.sprite = muteButtonHighlighted;
-            isMuted = true;
+            PlayerPrefs.SetInt("isMuted", 1);
+            PlayerPrefs.Save();
         }
         else
         {
             muteBtn.image.sprite = regularMute;
-            isMuted = false;
+            PlayerPrefs.SetInt("isMuted", 0);
+            PlayerPrefs.Save();
         }
     }
 
     public void crowdDisabledPressed()
     {
-        if(!crowdDisabled)
+        buttonPressed.Play();
+        if(PlayerPrefs.GetInt("crowdDisabled", 0) == 0)
         {
             crowdButton.image.sprite = highlightedCrowdDisabledGraphic;
-            crowdDisabled = true;
+            PlayerPrefs.SetInt("crowdDisabled", 1);
+            PlayerPrefs.Save();
+            crowd.SetActive(false);
         }
         else
         {
             crowdButton.image.sprite = regularDisabledCrowdGraphic;
-            crowdDisabled = false;
+            PlayerPrefs.SetInt("crowdDisabled", 0);
+            PlayerPrefs.Save();
+            crowd.SetActive(true);
         }
     }
+
+    public void DisableTutorialButton()
+    {
+        buttonPressed.Play();
+        if(PlayerPrefs.GetInt("tutorialDisabled", 0) == 0)
+        {
+            tutorialButton.image.sprite = highlightedCrowdDisabledGraphic;
+            PlayerPrefs.SetInt("tutorialDisabled", 1);
+            PlayerPrefs.Save();
+            tutorial.SetActive(false);
+        }
+        else
+        {
+            tutorialButton.image.sprite = regularDisabledCrowdGraphic;
+            PlayerPrefs.SetInt("tutorialDisabled", 0);
+            PlayerPrefs.Save();
+            tutorial.SetActive(true);
+        }
+    }
+
+    private void CheckIfCrowdShouldBeDisabled()
+    {
+        if (PlayerPrefs.GetInt("crowdDisabled", 0) == 0)
+        {
+            crowd.SetActive(true);
+            crowdButton.image.sprite = regularDisabledCrowdGraphic;
+        }
+        else
+        {
+            crowd.SetActive(false);
+            crowdButton.image.sprite = highlightedCrowdDisabledGraphic;
+        }
+    }
+
+    private void CheckIfGameShouldBeMuted()
+    {
+        if (PlayerPrefs.GetInt("isMuted", 0) == 0)
+        {
+            muteBtn.image.sprite = regularMute;
+        }
+        else
+        {
+            muteBtn.image.sprite = muteButtonHighlighted;
+        }
+    }
+
+    private void CheckIfTutoiralShouldBeDisabled()
+    {
+        if(PlayerPrefs.GetInt("tutorialDisabled", 0) == 0)
+        {
+            tutorialButton.image.sprite = regularDisabledCrowdGraphic;
+            tutorial.SetActive(true);
+        }
+        else
+        {
+            tutorialButton.image.sprite = highlightedCrowdDisabledGraphic;
+            tutorial.SetActive(false);
+        }
+    }
+
 }
