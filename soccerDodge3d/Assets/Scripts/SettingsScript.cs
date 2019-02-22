@@ -13,11 +13,20 @@ public class SettingsScript : MonoBehaviour
     public Button muteBtn;
     public Button crowdButton;
     public Button tutorialButton;
+    public Button shadowButton;
+    public Button backButton;
+    public Text muteText;
+    public Text crowdText;
+    public Text tutorialText;
+    public Text shadowText;
+    public Image settingsBackgroundImage;
 
-    public GameObject settingsMenu;
+    public GameObject deathAdUI;
     public GameObject tutorial;
     public GameObject crowd;
-    public GameObject permanentUI;
+    public Text scoreText;
+    public Text coinText;
+    public Image coinImage;
 
     public AudioSource buttonPressed;
 
@@ -26,19 +35,20 @@ public class SettingsScript : MonoBehaviour
         CheckIfCrowdShouldBeDisabled();
         CheckIfTutoiralShouldBeDisabled();
         CheckIfGameShouldBeMuted();
+        CheckIfShadowsShouldBeDisabled();
     }
     public void showSettings()
     {
         buttonPressed.Play();
-        settingsMenu.SetActive(true);
-        permanentUI.SetActive(false);
+        DisableMainUI();
+        EnableSettingsUI();
     }
 
     public void leaveSettings()
     {
         buttonPressed.Play();
-        settingsMenu.SetActive(false);
-        permanentUI.SetActive(true);
+        DisableSettingsUI();
+        EnableMainUI();
     }
 
     public void muteBtnPressed()
@@ -49,12 +59,14 @@ public class SettingsScript : MonoBehaviour
             muteBtn.image.sprite = muteButtonHighlighted;
             PlayerPrefs.SetInt("isMuted", 1);
             PlayerPrefs.Save();
+            AudioListener.pause = true;
         }
         else
         {
             muteBtn.image.sprite = regularMute;
             PlayerPrefs.SetInt("isMuted", 0);
             PlayerPrefs.Save();
+            AudioListener.pause = false;
         }
     }
 
@@ -96,6 +108,39 @@ public class SettingsScript : MonoBehaviour
         }
     }
 
+    public void DisableShadowsButton()
+    {
+        buttonPressed.Play();
+        if(PlayerPrefs.GetInt("shadowsDisabled",0) == 0)
+        {
+            shadowButton.image.sprite = highlightedCrowdDisabledGraphic;
+            PlayerPrefs.SetInt("shadowsDisabled", 1);
+            PlayerPrefs.Save();
+            QualitySettings.shadows = ShadowQuality.Disable;
+        }
+        else
+        {
+            shadowButton.image.sprite = regularDisabledCrowdGraphic;
+            PlayerPrefs.SetInt("shadowsDisabled", 0);
+            PlayerPrefs.Save();
+            QualitySettings.shadows = ShadowQuality.All;
+        }
+    }
+
+    private void CheckIfShadowsShouldBeDisabled()
+    {
+        if(PlayerPrefs.GetInt("shadowsDisabled", 0) == 0)
+        {
+            QualitySettings.shadows = ShadowQuality.All;
+            shadowButton.image.sprite = regularDisabledCrowdGraphic;
+        }
+        else
+        {
+            QualitySettings.shadows = ShadowQuality.Disable;
+            shadowButton.image.sprite = highlightedCrowdDisabledGraphic;
+        }
+    }
+
     private void CheckIfCrowdShouldBeDisabled()
     {
         if (PlayerPrefs.GetInt("crowdDisabled", 0) == 0)
@@ -115,10 +160,12 @@ public class SettingsScript : MonoBehaviour
         if (PlayerPrefs.GetInt("isMuted", 0) == 0)
         {
             muteBtn.image.sprite = regularMute;
+            AudioListener.pause = false;
         }
         else
         {
             muteBtn.image.sprite = muteButtonHighlighted;
+            AudioListener.pause = true;
         }
     }
 
@@ -136,4 +183,45 @@ public class SettingsScript : MonoBehaviour
         }
     }
 
+    private void EnableMainUI()
+    {
+        coinText.gameObject.SetActive(true);
+        scoreText.gameObject.SetActive(true);
+        coinImage.gameObject.SetActive(true);
+    }
+
+    private void DisableMainUI()
+    {
+        coinText.gameObject.SetActive(false);
+        scoreText.gameObject.SetActive(false);
+        coinImage.gameObject.SetActive(false);
+    }
+
+    private void EnableSettingsUI()
+    {
+        settingsBackgroundImage.gameObject.SetActive(true);
+        muteBtn.gameObject.SetActive(true);
+        shadowButton.gameObject.SetActive(true);
+        tutorialButton.gameObject.SetActive(true);
+        crowdButton.gameObject.SetActive(true);
+        muteText.gameObject.SetActive(true);
+        shadowText.gameObject.SetActive(true);
+        tutorialText.gameObject.SetActive(true);
+        crowdText.gameObject.SetActive(true);
+        backButton.gameObject.SetActive(true);
+    }
+
+    private void DisableSettingsUI()
+    {
+        settingsBackgroundImage.gameObject.SetActive(false);
+        muteBtn.gameObject.SetActive(false);
+        shadowButton.gameObject.SetActive(false);
+        tutorialButton.gameObject.SetActive(false);
+        crowdButton.gameObject.SetActive(false);
+        muteText.gameObject.SetActive(false);
+        shadowText.gameObject.SetActive(false);
+        tutorialText.gameObject.SetActive(false);
+        crowdText.gameObject.SetActive(false);
+        backButton.gameObject.SetActive(false);
+    }
 }

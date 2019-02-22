@@ -48,7 +48,6 @@ public class controller : MonoBehaviour {
             }
 */
 
-
         if(Input.GetKeyDown(KeyCode.Space) && canJump)
         {
             playerRigidBody.velocity = new Vector3(playerRigidBody.velocity.x, jumpForce, playerRigidBody.velocity.z);

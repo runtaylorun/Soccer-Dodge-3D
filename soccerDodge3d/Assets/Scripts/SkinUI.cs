@@ -50,7 +50,7 @@ public class SkinUI : MonoBehaviour
         playerCoins = PlayerPrefs.GetInt("Coins", 0);
         InitializeLocks();
         PlayerPrefs.SetInt("skinLock1", 1);
-        displayPosition = new Vector3(113.1584f, 0.1132f, 51.0033f);
+        displayPosition = new Vector3(113.1476f, 0.1081f, 51.0033f);
         modelRotation = new Vector3(0, 180, 0);
         modelIsShowing = false;
         CoinText.text = playerCoins.ToString();

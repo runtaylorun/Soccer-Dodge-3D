@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class CharacterSelection : MonoBehaviour
 {
-    public GameObject tempUIStart;
+    public Button characterSelectionButton;
+    public Button leaderboardButton;
     public Canvas mainCanvas;
     public Camera mainCam;
     public Animator confirmation;
@@ -16,9 +17,9 @@ public class CharacterSelection : MonoBehaviour
     public void openSelectionMenu()
     {
         buttonPress.Play();
+        DisableTemporaryStartMenu();
         mainCam.enabled = false;
         mainCanvas.enabled = false;
-        tempUIStart.SetActive(false);
         selectionCameraHolder.SetActive(true);
     }
 
@@ -28,8 +29,20 @@ public class CharacterSelection : MonoBehaviour
         selectionCameraHolder.SetActive(false);
         mainCam.enabled = true;
         mainCanvas.enabled = true;
-        tempUIStart.SetActive(true);
+        EnableTemporaryStartMenu();
         confirmation.SetBool("Confirmation", false);
         coinsTextMain.text = PlayerPrefs.GetInt("Coins").ToString();
+    }
+
+    private void DisableTemporaryStartMenu()
+    {
+        leaderboardButton.gameObject.SetActive(false);
+        characterSelectionButton.gameObject.SetActive(false);
+    }
+
+    private void EnableTemporaryStartMenu()
+    {
+        leaderboardButton.gameObject.SetActive(true);
+        characterSelectionButton.gameObject.SetActive(true);
     }
 }

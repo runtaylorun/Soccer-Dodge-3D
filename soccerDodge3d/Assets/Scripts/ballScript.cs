@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SocialPlatforms;
 
 
 public class ballScript : MonoBehaviour {
@@ -17,6 +18,7 @@ public class ballScript : MonoBehaviour {
     private GameObject modelToLoad;
     private GameObject modelClone;
 
+    private long scoreForLeaderboard;
     public int score = 0;
     private int totalCoins;
     private int highScore;
@@ -28,11 +30,13 @@ public class ballScript : MonoBehaviour {
     public GameObject player;
     public GameObject deathUI;
     public GameObject mainUI;
-    public GameObject temporaryStartMenu;
+    public Button leaderboardButton;
+    public Button characterSelectionButton;
     public Text scoreText;
     public Text coinsText;
     public Text highScoreText;
     private Animator deathUIAnimator;
+    public Animator deathAdUIAnimator;
     public Animator goalieAnimator;
     public Animator goalie2Animator;
     public ParticleSystem playerDeathParticles;
@@ -52,7 +56,9 @@ public class ballScript : MonoBehaviour {
     {
         if(firstClick && firstStart)
         {
-            temporaryStartMenu.SetActive(false);
+            leaderboardButton.gameObject.SetActive(false);
+            characterSelectionButton.gameObject.SetActive(false);
+            highScoreText.enabled = false;
             StartCoroutine("countdown");
             firstStart = false;
         }
@@ -85,6 +91,7 @@ public class ballScript : MonoBehaviour {
             playerDeathParticles.Play();
             Destroy(modelClone);
             deathUIAnimator.SetBool("Died", true);
+            deathAdUIAnimator.SetBool("Died", true);
             ballRigidBody.velocity = Vector3.zero;
             childBall.GetComponent<Renderer>().enabled = false;
             waitIsOver = false;
@@ -132,6 +139,7 @@ public class ballScript : MonoBehaviour {
 
     public void InitializeScene()
     {
+        scoreForLeaderboard = 0;
         childBall.GetComponent<Renderer>().enabled = true;
         firstStart = true;
         firstClick = false;
@@ -168,10 +176,14 @@ public class ballScript : MonoBehaviour {
 
     private void CheckForAndSetHighScore()
     {
-        if(score > highScore)
-            {
-                PlayerPrefs.SetInt("HighScore", score);
-            }
+        if (score > highScore)
+        {
+            PlayerPrefs.SetInt("HighScore", score);
+            scoreForLeaderboard = score;
+#if UNITY_IOS
+            reportScoresToLeaderboardsIOS();
+#endif
+        }  
     }
 
     private void ChooseIfBallGoesUpOrDown()
@@ -190,6 +202,22 @@ public class ballScript : MonoBehaviour {
     {
         totalCoins += coinsAddedThisRound;
         PlayerPrefs.SetInt("Coins", totalCoins);
+    }
+
+    private void reportScoresToLeaderboardsIOS()
+    {
+        Social.ReportScore(scoreForLeaderboard, "Monthly_Leaderboard", success => {
+            Debug.Log(success ? "Reported score successfully" : "Failed to report score");
+        });
+        Social.ReportScore(scoreForLeaderboard, "Daily_Leaderboard", success => {
+            Debug.Log(success ? "Reported score successfully" : "Failed to report score");
+        });
+        Social.ReportScore(scoreForLeaderboard, "Weekly_Leaderboard", success => {
+            Debug.Log(success ? "Reported score successfully" : "Failed to report score");
+        });
+        Social.ReportScore(scoreForLeaderboard, "All_Time_Leaderboard", success => {
+            Debug.Log(success ? "Reported score successfully" : "Failed to report score");
+        });
     }
 
     private void SelectCharacterToLoad()
