@@ -22,12 +22,18 @@ public class ballScript : MonoBehaviour {
     public int score = 0;
     private int totalCoins;
     private int highScore;
-    private int coinsAddedThisRound = 0;
+    public static int coinsAddedThisRound = 0;
     private int characterIndex;
     private Vector3 playerStartPosition = new Vector3(141.84f, -27.101f, 57.08f);
     public int upOrDown;
     public GameObject ball;
     public GameObject player;
+    public AudioSource Go;
+    public AudioSource coinAddSound;
+    public AudioSource countdownSound;
+    public AudioSource scoreSound;
+    public AudioSource Pop;
+    public Animator giftUIAnimator;
     public GameObject deathUI;
     public GameObject mainUI;
     public Button leaderboardButton;
@@ -68,6 +74,7 @@ public class ballScript : MonoBehaviour {
     {
         if (collision.gameObject.tag == "Goalie1")
         {
+            scoreSound.Play();
             goalieAnimator.SetTrigger("hitGoalie");
             upOrDown = Random.Range(1, 3);
             ballSpeed = -12;
@@ -78,6 +85,7 @@ public class ballScript : MonoBehaviour {
         }
         else if(collision.gameObject.tag == "Goalie2")
         {
+            scoreSound.Play();
             goalie2Animator.SetTrigger("Goalie2Hit");
             upOrDown = Random.Range(1, 3);
             ballSpeed = 12;
@@ -88,6 +96,7 @@ public class ballScript : MonoBehaviour {
         }
         else if(collision.gameObject.tag == "User")
         {
+            Pop.Play();
             playerDeathParticles.Play();
             Destroy(modelClone);
             deathUIAnimator.SetBool("Died", true);
@@ -95,11 +104,15 @@ public class ballScript : MonoBehaviour {
             ballRigidBody.velocity = Vector3.zero;
             childBall.GetComponent<Renderer>().enabled = false;
             waitIsOver = false;
+            CheckIfGiftShouldShow();
             deathUI.SetActive(true);
             ballRigidBody.isKinematic = true;
             UpdatePlayersCoins();
             CheckForAndSetHighScore();
-            StartCoroutine("addCoins");
+            if(score > 0)
+            {
+                StartCoroutine("addCoins");
+            }
         }
     }
 
@@ -109,15 +122,19 @@ public class ballScript : MonoBehaviour {
         GameObject clone;
         num = Resources.Load("3", typeof(GameObject)) as GameObject;
         clone = Instantiate(num, new Vector3(141.84f, -25.5f, 57.1f), Quaternion.Euler(new Vector3(0, 270, 0)));
+        countdownSound.Play();
         yield return new WaitForSeconds(1);
         Destroy(clone);
         num = Resources.Load("2", typeof(GameObject)) as GameObject;
         clone = Instantiate(num, new Vector3(141.84f, -25.5f, 57.1f), Quaternion.Euler(new Vector3(0, 270, 0)));
+        countdownSound.Play();
         yield return new WaitForSeconds(1);
         Destroy(clone);
         num = Resources.Load("1", typeof(GameObject)) as GameObject;
         clone = Instantiate(num, new Vector3(141.84f, -25.5f, 57.1f), Quaternion.Euler(new Vector3(0, 270, 0)));
+        countdownSound.Play();
         yield return new WaitForSeconds(1);
+        Go.Play();
         Destroy(clone);
 
         waitIsOver = true;
@@ -126,10 +143,12 @@ public class ballScript : MonoBehaviour {
 
     IEnumerator addCoins()
     {
+        yield return new WaitForSeconds(1.5f);
         totalCoins -= coinsAddedThisRound;
         for (int i = 0; i <= coinsAddedThisRound; i++)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.03f);
+            coinAddSound.Play();
             coinsText.text = totalCoins.ToString();
             totalCoins++;
         }
@@ -206,9 +225,6 @@ public class ballScript : MonoBehaviour {
 
     private void reportScoresToLeaderboardsIOS()
     {
-        Social.ReportScore(scoreForLeaderboard, "Monthly_Leaderboard", success => {
-            Debug.Log(success ? "Reported score successfully" : "Failed to report score");
-        });
         Social.ReportScore(scoreForLeaderboard, "Daily_Leaderboard", success => {
             Debug.Log(success ? "Reported score successfully" : "Failed to report score");
         });
@@ -218,6 +234,14 @@ public class ballScript : MonoBehaviour {
         Social.ReportScore(scoreForLeaderboard, "All_Time_Leaderboard", success => {
             Debug.Log(success ? "Reported score successfully" : "Failed to report score");
         });
+    }
+
+    private void CheckIfGiftShouldShow()
+    {
+        if(FreeGift.rand == 25)
+        {
+            giftUIAnimator.SetBool("isShowing", true);
+        }
     }
 
     private void SelectCharacterToLoad()
@@ -238,6 +262,45 @@ public class ballScript : MonoBehaviour {
                 break;
             case 5:
                 modelToLoad = Resources.Load("Player5Load", typeof(GameObject)) as GameObject;
+                break;
+            case 6:
+                modelToLoad = Resources.Load("Player6Load", typeof(GameObject)) as GameObject;
+                break;
+            case 7:
+                modelToLoad = Resources.Load("Player7Load", typeof(GameObject)) as GameObject;
+                break;
+            case 8:
+                modelToLoad = Resources.Load("Player8Load", typeof(GameObject)) as GameObject;
+                break;
+            case 9:
+                modelToLoad = Resources.Load("Player9Load", typeof(GameObject)) as GameObject;
+                break;
+            case 10:
+                modelToLoad = Resources.Load("Player10Load", typeof(GameObject)) as GameObject;
+                break;
+            case 11:
+                modelToLoad = Resources.Load("Player11Load", typeof(GameObject)) as GameObject;
+                break;
+            case 12:
+                modelToLoad = Resources.Load("Player12Load", typeof(GameObject)) as GameObject;
+                break;
+            case 13:
+                modelToLoad = Resources.Load("Player13Load", typeof(GameObject)) as GameObject;
+                break;
+            case 14:
+                modelToLoad = Resources.Load("Player14Load", typeof(GameObject)) as GameObject;
+                break;
+            case 15:
+                modelToLoad = Resources.Load("Player15Load", typeof(GameObject)) as GameObject;
+                break;
+            case 16:
+                modelToLoad = Resources.Load("Player16Load", typeof(GameObject)) as GameObject;
+                break;
+            case 17:
+                modelToLoad = Resources.Load("Player17Load", typeof(GameObject)) as GameObject;
+                break;
+            case 18:
+                modelToLoad = Resources.Load("Player18Load", typeof(GameObject)) as GameObject;
                 break;
         }
     }

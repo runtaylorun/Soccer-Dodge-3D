@@ -11,6 +11,8 @@ public class controller : MonoBehaviour {
     public Animator animator;
     public GameObject air;
     public GameObject ground;
+    public AudioSource jumpSound;
+    public AudioSource landingSound;
 
     private bool canJump;
     private bool canCrouch;
@@ -18,11 +20,11 @@ public class controller : MonoBehaviour {
     private BoxCollider playerBoxCollider;
 	void Start () 
     {
+        disableCharacterAnimations();
         canJump = true;
         canCrouch = true;
         playerRigidBody = GetComponent<Rigidbody>();
         playerBoxCollider = GetComponent<BoxCollider>();
-		
 	}
 
 
@@ -35,6 +37,7 @@ public class controller : MonoBehaviour {
                 if (UserTouchedLeftHalfOfScreen(touch))
                 {
                     playerRigidBody.velocity = new Vector3(playerRigidBody.velocity.x, jumpForce, playerRigidBody.velocity.z);
+                    jumpSound.Play();
                     ballScript.firstClick = true;
                 }
                 else if (UserTouchedRightHalfOfScreen(touch)) 
@@ -48,13 +51,17 @@ public class controller : MonoBehaviour {
             }
 */
 
+
         if(Input.GetKeyDown(KeyCode.Space) && canJump)
         {
+            enableCharacterAnimation();
             playerRigidBody.velocity = new Vector3(playerRigidBody.velocity.x, jumpForce, playerRigidBody.velocity.z);
+            jumpSound.Play();
             ballScript.firstClick = true;
         }
         else if(Input.GetKey(KeyCode.C) && canCrouch)
         {
+            enableCharacterAnimation();
             animator.SetBool("isCrouching", true);
             ballScript.firstClick = true;
         }
@@ -63,9 +70,8 @@ public class controller : MonoBehaviour {
             animator.SetBool("isCrouching", false);
         }
 
-
 	}
-	
+
      void OnTriggerEnter(Collider collision)
     {
         if(collision.gameObject.tag == "Air")
@@ -77,9 +83,10 @@ public class controller : MonoBehaviour {
 
     private void OnCollisionEnter(Collision col)
     {
-        if(col.gameObject.tag == "Ground")
+        if (col.gameObject.tag == "Ground")
         {
             animator.SetTrigger("hitGround");
+            landingSound.Play();
             canJump = true;
             canCrouch = true;
         }
@@ -95,6 +102,18 @@ public class controller : MonoBehaviour {
         {
             return false;
         }
+    }
+
+    private void enableCharacterAnimation()
+    {
+        animator.enabled = true;
+        landingSound.enabled = true;
+    }
+
+    private void disableCharacterAnimations()
+    {
+        animator.enabled = false;
+        landingSound.enabled = false;
     }
 
     private bool UserTouchedLeftHalfOfScreen(Touch touch)

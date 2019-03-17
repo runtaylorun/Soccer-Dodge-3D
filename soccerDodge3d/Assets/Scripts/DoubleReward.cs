@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Advertisements;
+using UnityEngine.UI;
 
 public class DoubleReward : MonoBehaviour
 {
 
     public GameObject deathAdUI;
+    public Text coinText;
+    private int playerCoins;
 
     public void doubleRewardButton()
     {
+        playerCoins = PlayerPrefs.GetInt("Coins", 0);
         showRewardAd();
     }
 
@@ -27,7 +31,9 @@ public class DoubleReward : MonoBehaviour
         switch(result)
         {
             case ShowResult.Finished:
-                Debug.Log("Successfully shown");
+                playerCoins += ballScript.coinsAddedThisRound;
+                PlayerPrefs.SetInt("Coins", playerCoins);
+                coinText.text = playerCoins.ToString();
                 deathAdUI.SetActive(false);
                 break;
             case ShowResult.Skipped:
@@ -38,4 +44,18 @@ public class DoubleReward : MonoBehaviour
                 break;
         }
     }
+    /*
+    IEnumerator addCoins()
+    {
+        var subtractCoins = PlayerPrefs.GetInt("Coins");
+        subtractCoins -= ballScript.coinsAddedThisRound;
+        for (int i = 0; i <= ballScript.coinsAddedThisRound; i++)
+        {
+            yield return new WaitForSeconds(0.1f);
+            coinText.text = subtractCoins.ToString();
+            subtractCoins++;
+        }
+    }
+
+*/
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
+using UnityEngine.SocialPlatforms.GameCenter;
 
 public class LeaderboardBtn : MonoBehaviour
 {
@@ -29,13 +30,14 @@ public class LeaderboardBtn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     public void LeaderboardButton()
     {
 #if UNITY_IOS
-        Social.ShowLeaderboardUI();
+        GameCenterPlatform.ShowLeaderboardUI("Daily_Leaderboard", TimeScope.Today);
+        GameCenterPlatform.ShowLeaderboardUI("Weekly_Leaderboard", TimeScope.Week);
+        GameCenterPlatform.ShowLeaderboardUI("All_Time_Leaderboard", TimeScope.AllTime);
 #endif
     }
 }
