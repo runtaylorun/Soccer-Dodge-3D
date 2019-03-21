@@ -27,11 +27,6 @@ public class LeaderboardBtn : MonoBehaviour
     #endif
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     public void LeaderboardButton()
     {
 #if UNITY_IOS

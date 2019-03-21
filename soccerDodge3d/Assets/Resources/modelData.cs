@@ -8,14 +8,4 @@ public class modelData : MonoBehaviour
     public int charIndex;
     public int lockStatus;
     public string lockStat;
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

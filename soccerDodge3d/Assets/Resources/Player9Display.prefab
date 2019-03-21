@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb87fc507b5524e2bb0eb54c26a098c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 700
+  cost: 1000
   charIndex: 9
   lockStatus: 1
   lockStat: skin9Lock
@@ -87,6 +87,10 @@ PrefabInstance:
       propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 8c355419e12d641ff8d81e853f2f5c10, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 23a99f983ff9c4e9b919d65780014c82, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c355419e12d641ff8d81e853f2f5c10, type: 3}
 --- !u!1 &4973318558271759784 stripped

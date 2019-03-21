@@ -7,6 +7,7 @@ public class PlayBtn : MonoBehaviour {
 
     public Animator fadeAnim;
     public AudioSource clickbutton;
+
     public void clickPlay()
     {
         clickbutton.Play();

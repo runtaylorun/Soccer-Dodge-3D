@@ -5,7 +5,9 @@ using UnityEngine;
 public class Timer : MonoBehaviour
 {
     private float timeLeft = 2.0f;
+
     public Animator animator;
+
     void Start()
     {
         animator = gameObject.GetComponent<Animator>();

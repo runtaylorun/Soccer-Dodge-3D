@@ -9,7 +9,9 @@ public class SettingsScript : MonoBehaviour
     public Sprite muteButtonHighlighted;
     public Sprite regularDisabledCrowdGraphic;
     public Sprite highlightedCrowdDisabledGraphic;
-
+    public AudioSource birdNoise;
+    public AudioSource crowdNoise;
+    public AudioSource buttonPressed;
     public Button muteBtn;
     public Button crowdButton;
     public Button tutorialButton;
@@ -19,16 +21,13 @@ public class SettingsScript : MonoBehaviour
     public Text crowdText;
     public Text tutorialText;
     public Text shadowText;
+    public Text scoreText;
+    public Text coinText;
     public Image settingsBackgroundImage;
-
+    public Image coinImage;
     public GameObject deathAdUI;
     public GameObject tutorial;
     public GameObject crowd;
-    public Text scoreText;
-    public Text coinText;
-    public Image coinImage;
-
-    public AudioSource buttonPressed;
 
     public void Start()
     {
@@ -79,6 +78,7 @@ public class SettingsScript : MonoBehaviour
             PlayerPrefs.SetInt("crowdDisabled", 1);
             PlayerPrefs.Save();
             crowd.SetActive(false);
+            DisableCrowdNoises();
         }
         else
         {
@@ -86,6 +86,7 @@ public class SettingsScript : MonoBehaviour
             PlayerPrefs.SetInt("crowdDisabled", 0);
             PlayerPrefs.Save();
             crowd.SetActive(true);
+            EnableCrowdNoises();
         }
     }
 
@@ -146,13 +147,27 @@ public class SettingsScript : MonoBehaviour
         if (PlayerPrefs.GetInt("crowdDisabled", 0) == 0)
         {
             crowd.SetActive(true);
+            EnableCrowdNoises();
             crowdButton.image.sprite = regularDisabledCrowdGraphic;
         }
         else
         {
             crowd.SetActive(false);
+            DisableCrowdNoises();
             crowdButton.image.sprite = highlightedCrowdDisabledGraphic;
         }
+    }
+
+    private void EnableCrowdNoises()
+    {
+        birdNoise.enabled = false;
+        crowdNoise.enabled = true;
+    }
+
+    private void DisableCrowdNoises()
+    {
+        birdNoise.enabled = true;
+        crowdNoise.enabled = false;
     }
 
     private void CheckIfGameShouldBeMuted()

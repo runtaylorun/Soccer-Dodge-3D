@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb87fc507b5524e2bb0eb54c26a098c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 1000
+  cost: 1500
   charIndex: 5
   lockStatus: 1
   lockStat: skin5Lock

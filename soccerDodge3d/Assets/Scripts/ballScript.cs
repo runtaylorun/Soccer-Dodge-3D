@@ -11,40 +11,44 @@ public class ballScript : MonoBehaviour {
 
     private bool firstStart = true;
     private bool waitIsOver = false;
+    private bool firstHighScore;
     private int ballSpeed = -12;
     private int ballHeight = 9;
+    private int totalCoins;
+    private int doubleRewardRand;
+    private int highScore;
+    private int characterIndex;
+    private long scoreForLeaderboard;
     private GameObject childBall;
-    private Rigidbody ballRigidBody;
     private GameObject modelToLoad;
     private GameObject modelClone;
-
-    private long scoreForLeaderboard;
-    public int score = 0;
-    private int totalCoins;
-    private int highScore;
-    public static int coinsAddedThisRound = 0;
-    private int characterIndex;
+    private Rigidbody ballRigidBody;
+    private Animator deathUIAnimator;
     private Vector3 playerStartPosition = new Vector3(141.84f, -27.101f, 57.08f);
+
+    public static int coinsAddedThisRound = 0;
+    public int score = 0;
     public int upOrDown;
     public GameObject ball;
     public GameObject player;
+    public GameObject deathUI;
+    public GameObject mainUI;
     public AudioSource Go;
     public AudioSource coinAddSound;
     public AudioSource countdownSound;
     public AudioSource scoreSound;
-    public AudioSource Pop;
-    public Animator giftUIAnimator;
-    public GameObject deathUI;
-    public GameObject mainUI;
+    public AudioSource deathSound;
     public Button leaderboardButton;
     public Button characterSelectionButton;
     public Text scoreText;
     public Text coinsText;
     public Text highScoreText;
-    private Animator deathUIAnimator;
+    public Text newBestText;
     public Animator deathAdUIAnimator;
+    public Animator doubleRewardAnimator;
     public Animator goalieAnimator;
     public Animator goalie2Animator;
+    public Animator giftUIAnimator;
     public ParticleSystem playerDeathParticles;
 
 
@@ -68,13 +72,18 @@ public class ballScript : MonoBehaviour {
             StartCoroutine("countdown");
             firstStart = false;
         }
+        if(score > highScore && firstHighScore == true)
+        {
+            StartCoroutine("FlashText");
+            firstHighScore = false;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Goalie1")
         {
-            scoreSound.Play();
+            PlayScoreSound();
             goalieAnimator.SetTrigger("hitGoalie");
             upOrDown = Random.Range(1, 3);
             ballSpeed = -12;
@@ -85,7 +94,7 @@ public class ballScript : MonoBehaviour {
         }
         else if(collision.gameObject.tag == "Goalie2")
         {
-            scoreSound.Play();
+            PlayScoreSound();
             goalie2Animator.SetTrigger("Goalie2Hit");
             upOrDown = Random.Range(1, 3);
             ballSpeed = 12;
@@ -96,11 +105,15 @@ public class ballScript : MonoBehaviour {
         }
         else if(collision.gameObject.tag == "User")
         {
-            Pop.Play();
+            PlayDeathSound();
             playerDeathParticles.Play();
             Destroy(modelClone);
             deathUIAnimator.SetBool("Died", true);
             deathAdUIAnimator.SetBool("Died", true);
+            if(doubleRewardRand == 15)
+            {
+                doubleRewardAnimator.SetBool("isShowing", true);
+            }
             ballRigidBody.velocity = Vector3.zero;
             childBall.GetComponent<Renderer>().enabled = false;
             waitIsOver = false;
@@ -141,6 +154,25 @@ public class ballScript : MonoBehaviour {
         mainUI.SetActive(false);
     }
 
+    IEnumerator FlashText()
+    {
+        newBestText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(.5f);
+        newBestText.gameObject.SetActive(false);
+        yield return new WaitForSeconds(.5f);
+        newBestText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(.5f);
+        newBestText.gameObject.SetActive(false);
+        yield return new WaitForSeconds(.5f);
+        newBestText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(.5f);
+        newBestText.gameObject.SetActive(false);
+        yield return new WaitForSeconds(.5f);
+        newBestText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(.5f);
+        newBestText.gameObject.SetActive(false);
+    }
+
     IEnumerator addCoins()
     {
         yield return new WaitForSeconds(1.5f);
@@ -152,8 +184,6 @@ public class ballScript : MonoBehaviour {
             coinsText.text = totalCoins.ToString();
             totalCoins++;
         }
-
-
     }
 
     public void InitializeScene()
@@ -162,7 +192,9 @@ public class ballScript : MonoBehaviour {
         childBall.GetComponent<Renderer>().enabled = true;
         firstStart = true;
         firstClick = false;
+        firstHighScore = true;
         ballSpeed = -12;
+        doubleRewardRand = Random.Range(0, 25);
         score = 0;
         scoreText.text = score.ToString();
         coinsAddedThisRound = 0;
@@ -215,6 +247,16 @@ public class ballScript : MonoBehaviour {
         {
             KickBallUp();
         }
+    }
+
+    private void PlayScoreSound()
+    {
+        scoreSound.Play();
+    }
+
+    private void PlayDeathSound()
+    {
+        deathSound.Play();
     }
 
     private void UpdatePlayersCoins()
@@ -301,6 +343,36 @@ public class ballScript : MonoBehaviour {
                 break;
             case 18:
                 modelToLoad = Resources.Load("Player18Load", typeof(GameObject)) as GameObject;
+                break;
+            case 19:
+                modelToLoad = Resources.Load("Player19Load", typeof(GameObject)) as GameObject;
+                break;
+            case 20:
+                modelToLoad = Resources.Load("Player20Load", typeof(GameObject)) as GameObject;
+                break;
+            case 21:
+                modelToLoad = Resources.Load("Player21Load", typeof(GameObject)) as GameObject;
+                break;
+            case 22:
+                modelToLoad = Resources.Load("Player22Load", typeof(GameObject)) as GameObject;
+                break;
+            case 23:
+                modelToLoad = Resources.Load("Player23Load", typeof(GameObject)) as GameObject;
+                break;
+            case 24:
+                modelToLoad = Resources.Load("Player24Load", typeof(GameObject)) as GameObject;
+                break;
+            case 25:
+                modelToLoad = Resources.Load("Player25Load", typeof(GameObject)) as GameObject;
+                break;
+            case 26:
+                modelToLoad = Resources.Load("Player26Load", typeof(GameObject)) as GameObject;
+                break;
+            case 27:
+                modelToLoad = Resources.Load("Player27Load", typeof(GameObject)) as GameObject;
+                break;
+            case 28:
+                modelToLoad = Resources.Load("Player28Load", typeof(GameObject)) as GameObject;
                 break;
         }
     }

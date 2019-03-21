@@ -18,6 +18,7 @@ public class controller : MonoBehaviour {
     private bool canCrouch;
     private Rigidbody playerRigidBody;
     private BoxCollider playerBoxCollider;
+
 	void Start () 
     {
         disableCharacterAnimations();
@@ -36,15 +37,18 @@ public class controller : MonoBehaviour {
                 var touch = Input.GetTouch(0);
                 if (UserTouchedLeftHalfOfScreen(touch))
                 {
+                    enableCharacterAnimation();
                     playerRigidBody.velocity = new Vector3(playerRigidBody.velocity.x, jumpForce, playerRigidBody.velocity.z);
                     jumpSound.Play();
                     ballScript.firstClick = true;
                 }
                 else if (UserTouchedRightHalfOfScreen(touch)) 
                 {
+                    enableCharacterAnimation();
                     animator.SetBool("isCrouching", true);
                     ballScript.firstClick = true;
-                } else 
+                } 
+                else 
                 {
                 animator.SetBool ("isCrouching", false);
                 }
@@ -69,6 +73,7 @@ public class controller : MonoBehaviour {
         {
             animator.SetBool("isCrouching", false);
         }
+
 
 	}
 

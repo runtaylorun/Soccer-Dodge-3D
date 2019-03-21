@@ -7,19 +7,18 @@ using UnityEngine.SceneManagement;
 public class SkinUI : MonoBehaviour
 {
 
-    private GameObject displayModel;
     public Button lockButton;
     public Button playButton;
     public Animator confirmation;
     public AudioSource buttonPress;
     public AudioSource denyPress;
-
     public Text confirmationText;
     public Text CoinText;
     public Text ModelCostText;
 
     private Vector3 displayPosition;
     private Vector3 modelRotation;
+    private GameObject displayModel;
     private GameObject clone;
     private bool modelIsShowing;
     private float spinSpeed = 70f;
@@ -42,6 +41,16 @@ public class SkinUI : MonoBehaviour
     private int skin16Lock;
     private int skin17Lock;
     private int skin18Lock;
+    private int skin19Lock;
+    private int skin20Lock;
+    private int skin21Lock;
+    private int skin22Lock;
+    private int skin23Lock;
+    private int skin24Lock;
+    private int skin25Lock;
+    private int skin26Lock;
+    private int skin27Lock;
+    private int skin28Lock;
 
     public AudioSource coinSubtract;
     public AudioSource purchased;
@@ -350,6 +359,156 @@ public class SkinUI : MonoBehaviour
         closeConfirmationMenu();
     }
 
+    public void ShowSkin19()
+    {
+        buttonPress.Play();
+        Destroy(clone);
+        displayModel = Resources.Load("Player19Display", typeof(GameObject)) as GameObject;
+        clone = Instantiate(displayModel, displayPosition, Quaternion.Euler(modelRotation));
+        modelData = displayModel.GetComponent<modelData>();
+        modelData.lockStatus = skin19Lock;
+        CheckIfCharacterLocked();
+        modelIsShowing = true;
+        ModelCostText.text = "Cost: " + modelData.cost.ToString();
+        selectedSkinsCost = modelData.cost;
+        closeConfirmationMenu();
+    }
+
+    public void ShowSkin20()
+    {
+        buttonPress.Play();
+        Destroy(clone);
+        displayModel = Resources.Load("Player20Display", typeof(GameObject)) as GameObject;
+        clone = Instantiate(displayModel, displayPosition, Quaternion.Euler(modelRotation));
+        modelData = displayModel.GetComponent<modelData>();
+        modelData.lockStatus = skin20Lock;
+        CheckIfCharacterLocked();
+        modelIsShowing = true;
+        ModelCostText.text = "Cost: " + modelData.cost.ToString();
+        selectedSkinsCost = modelData.cost;
+        closeConfirmationMenu();
+    }
+
+    public void ShowSkin21()
+    {
+        buttonPress.Play();
+        Destroy(clone);
+        displayModel = Resources.Load("Player21Display", typeof(GameObject)) as GameObject;
+        clone = Instantiate(displayModel, displayPosition, Quaternion.Euler(modelRotation));
+        modelData = displayModel.GetComponent<modelData>();
+        modelData.lockStatus = skin21Lock;
+        CheckIfCharacterLocked();
+        modelIsShowing = true;
+        ModelCostText.text = "Cost: " + modelData.cost.ToString();
+        selectedSkinsCost = modelData.cost;
+        closeConfirmationMenu();
+    }
+
+    public void ShowSkin22()
+    {
+        buttonPress.Play();
+        Destroy(clone);
+        displayModel = Resources.Load("Player22Display", typeof(GameObject)) as GameObject;
+        clone = Instantiate(displayModel, displayPosition, Quaternion.Euler(modelRotation));
+        modelData = displayModel.GetComponent<modelData>();
+        modelData.lockStatus = skin22Lock;
+        CheckIfCharacterLocked();
+        modelIsShowing = true;
+        ModelCostText.text = "Cost: " + modelData.cost.ToString();
+        selectedSkinsCost = modelData.cost;
+        closeConfirmationMenu();
+    }
+
+    public void ShowSkin23()
+    {
+        buttonPress.Play();
+        Destroy(clone);
+        displayModel = Resources.Load("Player23Display", typeof(GameObject)) as GameObject;
+        clone = Instantiate(displayModel, displayPosition, Quaternion.Euler(modelRotation));
+        modelData = displayModel.GetComponent<modelData>();
+        modelData.lockStatus = skin23Lock;
+        CheckIfCharacterLocked();
+        modelIsShowing = true;
+        ModelCostText.text = "Cost: " + modelData.cost.ToString();
+        selectedSkinsCost = modelData.cost;
+        closeConfirmationMenu();
+    }
+
+    public void ShowSkin24()
+    {
+        buttonPress.Play();
+        Destroy(clone);
+        displayModel = Resources.Load("Player24Display", typeof(GameObject)) as GameObject;
+        clone = Instantiate(displayModel, displayPosition, Quaternion.Euler(modelRotation));
+        modelData = displayModel.GetComponent<modelData>();
+        modelData.lockStatus = skin24Lock;
+        CheckIfCharacterLocked();
+        modelIsShowing = true;
+        ModelCostText.text = "Cost: " + modelData.cost.ToString();
+        selectedSkinsCost = modelData.cost;
+        closeConfirmationMenu();
+    }
+
+    public void ShowSkin25()
+    {
+        buttonPress.Play();
+        Destroy(clone);
+        displayModel = Resources.Load("Player25Display", typeof(GameObject)) as GameObject;
+        clone = Instantiate(displayModel, displayPosition, Quaternion.Euler(modelRotation));
+        modelData = displayModel.GetComponent<modelData>();
+        modelData.lockStatus = skin25Lock;
+        CheckIfCharacterLocked();
+        modelIsShowing = true;
+        ModelCostText.text = "Cost: " + modelData.cost.ToString();
+        selectedSkinsCost = modelData.cost;
+        closeConfirmationMenu();
+    }
+
+    public void ShowSkin26()
+    {
+        buttonPress.Play();
+        Destroy(clone);
+        displayModel = Resources.Load("Player26Display", typeof(GameObject)) as GameObject;
+        clone = Instantiate(displayModel, displayPosition, Quaternion.Euler(modelRotation));
+        modelData = displayModel.GetComponent<modelData>();
+        modelData.lockStatus = skin26Lock;
+        CheckIfCharacterLocked();
+        modelIsShowing = true;
+        ModelCostText.text = "Cost: " + modelData.cost.ToString();
+        selectedSkinsCost = modelData.cost;
+        closeConfirmationMenu();
+    }
+
+    public void ShowSkin27()
+    {
+        buttonPress.Play();
+        Destroy(clone);
+        displayModel = Resources.Load("Player27Display", typeof(GameObject)) as GameObject;
+        clone = Instantiate(displayModel, displayPosition, Quaternion.Euler(modelRotation));
+        modelData = displayModel.GetComponent<modelData>();
+        modelData.lockStatus = skin27Lock;
+        CheckIfCharacterLocked();
+        modelIsShowing = true;
+        ModelCostText.text = "Cost: " + modelData.cost.ToString();
+        selectedSkinsCost = modelData.cost;
+        closeConfirmationMenu();
+    }
+
+    public void ShowSkin28()
+    {
+        buttonPress.Play();
+        Destroy(clone);
+        displayModel = Resources.Load("Player28Display", typeof(GameObject)) as GameObject;
+        clone = Instantiate(displayModel, displayPosition, Quaternion.Euler(modelRotation));
+        modelData = displayModel.GetComponent<modelData>();
+        modelData.lockStatus = skin28Lock;
+        CheckIfCharacterLocked();
+        modelIsShowing = true;
+        ModelCostText.text = "Cost: " + modelData.cost.ToString();
+        selectedSkinsCost = modelData.cost;
+        closeConfirmationMenu();
+    }
+
     public void LoadGame()
     {
         buttonPress.Play();
@@ -378,6 +537,17 @@ public class SkinUI : MonoBehaviour
         skin16Lock = PlayerPrefs.GetInt("skin16Lock", 0);
         skin17Lock = PlayerPrefs.GetInt("skin17Lock", 0);
         skin18Lock = PlayerPrefs.GetInt("skin18Lock", 0);
+        skin19Lock = PlayerPrefs.GetInt("skin19Lock", 0);
+        skin20Lock = PlayerPrefs.GetInt("skin20Lock", 0);
+        skin21Lock = PlayerPrefs.GetInt("skin21Lock", 0);
+        skin22Lock = PlayerPrefs.GetInt("skin22Lock", 0);
+        skin23Lock = PlayerPrefs.GetInt("skin23Lock", 0);
+        skin24Lock = PlayerPrefs.GetInt("skin24Lock", 0);
+        skin25Lock = PlayerPrefs.GetInt("skin25Lock", 0);
+        skin26Lock = PlayerPrefs.GetInt("skin26Lock", 0);
+        skin27Lock = PlayerPrefs.GetInt("skin27Lock", 0);
+        skin28Lock = PlayerPrefs.GetInt("skin28Lock", 0);
+
 
     }
 
@@ -403,7 +573,7 @@ public class SkinUI : MonoBehaviour
             lockButton.gameObject.SetActive(false);
             playButton.gameObject.SetActive(true);
             InitializeLocks();
-            PlayerPrefs.SetInt("Coins", playerCoins - modelData.cost);
+            PlayerPrefs.SetInt("Coins", playerCoins);
             purchased.Play();
         }
         else
@@ -425,18 +595,6 @@ public class SkinUI : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         confirmationText.text = "Confirm Purchase " + selectedSkinsCost;
         confirmationText.enabled = true;
-    }
-
-    IEnumerator subtractCoins()
-    {
-        for (int i = 0; i <= selectedSkinsCost; i++)
-        {
-            yield return new WaitForSeconds(0.0000000000001f);
-            coinSubtract.Play();
-            CoinText.text = playerCoins.ToString();
-            playerCoins--;
-            Debug.Log(playerCoins);
-        }
     }
 
     private void ShowLockedUI()
